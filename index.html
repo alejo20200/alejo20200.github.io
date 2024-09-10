@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Precio de Oro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        label, input, select, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Precio de Oro</h1>
+        <form id="goldForm">
+            <label for="weight">Peso del lingote (1-10 gramos):</label>
+            <input type="number" id="weight" min="1" max="10" required>
+            
+            <label for="currency">Moneda:</label>
+            <select id="currency">
+                <option value="ARS">Pesos Argentinos</option>
+                <option value="EUR">Euros</option>
+                <option value="USD">Dólar</option>
+                <option value="USDB">Dólar Blue</option>
+            </select>
+            
+            <button type="submit">Calcular</button>
+        </form>
+        <div id="result"></div>
+        <div class="footer">Hecho por Alejandro tok</div>
+    </div>
+
+    <script>
+        // Precio base del oro por gramo en USD (esto debería actualizarse regularmente)
+        const goldPricePerGram = 60;
+
+        // Tasas de cambio (deberían actualizarse en tiempo real con una API)
+        const exchangeRates = {
+            ARS: 350,
+            EUR: 0.85,
+            USD: 1,
+            USDB: 380
+        };
+
+        document.getElementById('goldForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const weight = document.getElementById('weight').value;
+            const currency = document.getElementById('currency').value;
+            
+            if (weight < 1 || weight > 10) {
+                alert('Por favor, ingrese un peso entre 1 y 10 gramos.');
+                return;
+            }
+
+            const priceUSD = goldPricePerGram * weight;
+            const priceInCurrency = priceUSD * exchangeRates[currency];
+            
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = `Precio del lingote de oro de ${weight}g (24k, 999 pureza): ${priceInCurrency.toFixed(2)} ${currency}`;
+        });
+    </script>
+</body>
+</html>
